@@ -1,0 +1,49 @@
+<html>
+    <head>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>
+    $(function() {
+            var correct_answer = "";
+            $.getJSON('listen_write.json', function(data) {
+                var reading = data;
+                var answer_len = 0;
+                var mp3file = data.mp3file;
+                document.getElementById("audio").src=mp3file;
+                for (var ans in reading.answers){
+                    if (reading.answers[ans].content.length > answer_len){
+                        answer_len = reading.answers[ans].content.length;
+                    };
+                    if (reading.answers[ans].correct == true){
+                        window.correct_answer = reading.answers[ans].content;
+                    };
+                    
+                };
+                $( "#question input[name=answer]").attr("size",answer_len.toString());
+                
+                
+            });
+            
+    });
+
+    function checkAnswer(correct_answer) {
+        var student_ans = $("#question input[name=answer]").val();
+        var message = "Wrong: " + student_ans;
+        if (student_ans == correct_answer){
+            message = "Correct: " + student_ans;
+        };
+        document.getElementById("chosen").innerHTML = message;
+        };
+    </script>
+    </head>
+    <body>
+        <audio controls src="" id="audio"></audio>
+        <p id="question"></p>
+        <div id="answers">
+            <form id="question" action="" onsubmit="return checkAnswer()">
+                Answer: <input type="text" name="answer"><br>
+            </form>
+            <button id="check" onclick="checkAnswer(window.correct_answer)">Check</button>
+        </div>
+        <div id="chosen"></div>
+    </body>
+</html>

@@ -1,0 +1,10 @@
+{
+    "mp3file":"I like several things about Minnesota.mp3",
+    "text": "_____________________________________. I like the warm weather in Minnesota. I like the nice people in Minnesota. I really like the schools in Minnesota.",
+    "instructions": "Choose the best topic sentence:",
+    "answers":[
+        {"content":"I like several things about Minnesota.", "correct": true},
+        {"content":"I like the warm weather in Minnesota.", "correct": false},
+        {"content":"I really like the schools.", "correct": false}
+    ]
+}

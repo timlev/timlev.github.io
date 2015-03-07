@@ -1,0 +1,41 @@
+<html>
+    <head>
+    <style>
+        .highlighted {background-color: "blue";};
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>
+    $(function() {
+            correct_answer = "";
+            $.getJSON('listen_write.json', function(data)
+                var reading = data;
+                var form_start = '<form id="question" action=""" >';
+                for (var ans in data.answers){
+                    form_start += '<input type="radio" name="answers" value="' +  data.answers[ans].content + '"><span>' + data.answers[ans].content + '</span><br>';
+                    if (data.answers[ans].correct == true){
+                        correct_answer = data.answers[ans].content;
+                    };
+                };
+                form_start += '</form>';
+                document.getElementById("answers").innerHTML = form_start;
+            });
+    $('span').on("mouseenter", $(this).css("background-color","blue"));
+    });
+    function checkAnswer(correct_answer) {
+        var chosen_answer = $("#question input[name=answers]:checked").val();
+        var message = "Wrong: " + chosen_answer;
+        if (chosen_answer == correct_answer){
+            message = "Correct: " + chosen_answer;
+        };
+        document.getElementById("chosen").innerHTML = message;
+    };
+        
+    </script>
+    </head>
+    <body>
+        <audio controls src="I thought I was late but the teacher said I was on time.mp3"></audio>
+        <div id="answers"></div>
+        <button id="check" onclick="checkAnswer(window.correct_answer)">Check</button>
+        <div id="chosen"></div>
+    </body>
+</html>

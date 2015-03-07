@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script>
+        $(function() {
+            $.getJSON('drop.json', function(data) {
+                reading = data;
+                var total_html = "";
+                var current_hash_count = 0;
+                for (var char in reading.text){
+                    if (reading.text[char] != "#"){
+                        total_html += reading.text[char];
+                    }
+                    else {
+                        var start = '<select id="question' + current_hash_count + '" onchange="getval(this);"><option value="empty"></option>';
+                        for (var val in reading.questions[current_hash_count]){
+                            start += '<option value="' + reading.questions[current_hash_count][val].content + '">' + reading.questions[current_hash_count][val].content + '</option>';
+                            if (reading.questions[current_hash_count][val].correct) {
+                                continue;
+                            };
+                        };
+                        start += '</select>';
+                        total_html += start;
+                        current_hash_count += 1;
+                        };
+                    };
+                document.getElementById("q1").innerHTML= total_html;
+                });
+            });
+            function getval(sel){
+                var question = parseInt(sel.id.replace("question",""));
+                var correct_answer = "";
+                for (var val in reading.questions[question]){
+                    if (reading.questions[question][val].correct == true){
+                        correct_answer = reading.questions[question][val].content;
+                    };
+                };
+                var message = "Wrong: " + sel.value;
+                if (sel.value == correct_answer){
+                    message = "Correct: " + sel.value;
+                };
+                alert(message);
+            };
+        </script>
+    </head>
+    <body>
+    <div id="q1"></div>
+    <div id="div1"></div>
+    </body>
+
+</html>

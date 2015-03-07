@@ -1,0 +1,82 @@
+<html>
+    <head>
+    <link rel="stylesheet" href="stylesheet.css" type="text/css" charset="utf-8" />
+    <style>
+        .ans:hover {background-color:yellow}
+	.ans {font-size:1.5em}
+        .ans {cursor:pointer}
+	button {font-size:1.5em}
+        * {font-family: aaarghnormal}
+        #chosen {font-size:1.7em}
+        #container {max-width:600px}
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>
+    $(function() {
+            correct_answer = "";
+            $.getJSON('question.json', function(data) {
+                var reading = data;
+                var mp3file = data.mp3file;
+		document.getElementById("audio").src=mp3file;
+                var form_start = '<form id="question" action="" ><p>' + data.text + '</p>';
+                if (data.text != ""){
+                    form_start += '<hr>';
+                }
+                form_start += '<p>' + data.instructions + '</p>';
+                var mixed_ans = shuffle(data.answers);
+                for (var ans in data.answers){
+                    form_start += '<div class="ans" id="ans' + ans + '" onclick="selectAnswer(this)"><input type="radio" name="answers" value="' +  data.answers[ans].content + '">' + data.answers[ans].content + '</div>';
+                    if (data.answers[ans].correct == true){
+                        correct_answer = data.answers[ans].content;
+                    };
+                };
+                form_start += '</form>';
+                document.getElementById("answers").innerHTML = form_start;
+            });
+
+
+    });
+    function checkAnswer(correct_answer) {
+        var chosen_answer = $("#question input[name=answers]:checked").val();
+        var message = "Wrong: " + chosen_answer;
+        if (chosen_answer == correct_answer){
+            message = '<img src="Star.png" height="25px" width="25px"></img>Correct: ' + chosen_answer;
+        };
+        document.getElementById("chosen").innerHTML = message;
+    };
+    function selectAnswer(answerdiv) {
+        $(answerdiv).find("input").prop("checked",true);
+    };
+    
+    function shuffle(array) { //http://bost.ocks.org/mike/shuffle/
+        var currentIndex = array.length
+          , temporaryValue
+          , randomIndex
+          ;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+
+          // Pick a remaining element...
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+
+          // And swap it with the current element.
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+      };
+    </script>
+    </head>
+    <body>
+        <div id="container">
+        <audio controls  src="" id="audio"></audio>
+        <div id="answers"></div>
+        <button id="check" onclick="checkAnswer(window.correct_answer)">Check</button>
+        <div id="chosen"></div>
+        </div>
+    </body>
+</html>
