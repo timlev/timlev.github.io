@@ -1,0 +1,56 @@
+<html>
+	<title>Ticket to Ride Counter</title>
+	<head>
+	<script>
+	function setup(){
+		total = [0];
+		scores = {1:1, 2:2, 3:4, 4:7, 5:10, 6:15};
+		console.log("Total: " + total.reduce(function(a, b){return a+b;}));
+	};
+	function undo(){
+		if (total.length > 0){
+			status_msg = "Removed: " + total.pop() + " points";
+			score_msg ="Total: " + total.reduce(function(a, b){return a+b;});
+			document.getElementById('status').innerHTML = status_msg;
+			document.getElementById('score').innerHTML = score_msg;
+			console.log("Removed: " + total.pop());
+			console.log("Total: " + total.reduce(function(a, b){return a+b;}));
+		}
+		else {
+			status_msg = "Nothing to remove";
+			document.getElementById('status').innerHTML = status_msg;
+			console.log("Nothing to remove");
+		}
+	}
+	function add(trains){
+		total.push(scores[trains]);
+		score_msg ="Total: " + total.reduce(function(a, b){return a+b;});
+		status_msg = "Added: " + scores[trains] + " points";
+		document.getElementById('status').innerHTML = status_msg;
+		document.getElementById('score').innerHTML = score_msg;
+		console.log("Total: " + total.reduce(function(a, b){return a+b;}));
+	}
+	function reset(){
+		total = [0];
+		score_msg ="Total: " + total.reduce(function(a, b){return a+b;});
+		status_msg = "Reset to 0 points";
+		document.getElementById('status').innerHTML = status_msg;
+		document.getElementById('score').innerHTML = score_msg;
+		console.log("Total: " + total.reduce(function(a, b){return a+b;}));
+	}
+	window.onload = setup;
+	</script>
+	</head>
+	<body>
+		<div id="score">Total: 0</div>
+		<div id="status"></div>
+		<button id="add1" onclick="add(1)">+1 trains</button>
+		<button id="add2" onclick="add(2)">+2 trains</button>
+		<button id="add3" onclick="add(3)">+3 trains</button>
+		<button id="add4" onclick="add(4)">+4 trains</button>
+		<button id="add5" onclick="add(5)">+5 trains</button>
+		<button id="add6" onclick="add(6)">+6 trains</button>
+		<button id="undo" onclick="undo()">Undo</button>
+		<button id="reset" onclick="reset()">Reset</button>
+	</body>
+</html>
