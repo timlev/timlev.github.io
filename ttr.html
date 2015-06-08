@@ -1,6 +1,7 @@
 <html>
 	<title>Ticket to Ride Counter</title>
 	<head>
+		<link rel="stylesheet" type="text/css" href="stylesheet.css">
 	<script>
 	function setup(){
 		total = [0];
@@ -43,19 +44,19 @@
 	</head>
 	<body>
 		<div id="score">Total: 0</div>
-		<div id="status"></div>
+		<div id="status">Initial Status</div>
 		<table>
 		<tr>
-		<td><button id="add1" onclick="add(1)">+1 trains</button></td>
-		<td><button id="add2" onclick="add(2)">+2 trains</button></td>
-		<td><button id="add3" onclick="add(3)">+3 trains</button></td>
-		<td><button id="add4" onclick="add(4)">+4 trains</button></td>
-		<td><button id="add5" onclick="add(5)">+5 trains</button></td>
-		<td><button id="add6" onclick="add(6)">+6 trains</button></td>
+		<td><button id="add1" class="add" onclick="add(1)">+1 trains</button></td>
+		<td><button id="add2" class="add" onclick="add(2)">+2 trains</button></td>
+		<td><button id="add3" class="add" onclick="add(3)">+3 trains</button></td>
+		<td><button id="add4" class="add" onclick="add(4)">+4 trains</button></td>
+		<td><button id="add5" class="add" onclick="add(5)">+5 trains</button></td>
+		<td><button id="add6" class="add" onclick="add(6)">+6 trains</button></td>
 	</tr>
 		<tr>
-		<td><button id="undo" onclick="undo()">Undo</button></td>
-		<td><button id="reset" onclick="reset()">Reset</button></td>
+		<td><button id="undo" class="unre" onclick="undo()">Undo</button></td>
+		<td><button id="reset" class="unre" onclick="reset()">Reset</button></td>
 	</tr>
 	</body>
 </html>
