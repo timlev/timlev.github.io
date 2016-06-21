@@ -1,0 +1,61 @@
+<html>
+<head>
+  <title>Doctor Visit</title>
+  <script type="text/javascript">
+	function playId(id){
+	  console.log(id);
+	  document.getElementById(id).style.borderColor = "yellow";
+	  document.getElementById("audio_" + id).play(console.log("started"));
+	};
+	
+	function resetBorder(audio_id){
+		console.log(audio_id);
+		var id = audio_id.replace("audio_","");
+		document.getElementById(id).style.borderColor = "black";
+	}
+  </script>
+</head>
+
+<body>
+  <img id='1' src="1.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_1' src='Audio Track-1.mp3' onended="resetBorder(this.id)"></audio>
+<br> 
+
+  <img id='2' src="2.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_2' src='Audio Track-2.mp3'onended="resetBorder(this.id)"></audio>
+<br> 
+
+  <img id='3' src="3.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_3' src='Audio Track-3.mp3'onended="resetBorder(this.id)"></audio>
+<br> 
+
+  <img id='4' src="4.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_4' src='Audio Track-4.mp3'onended="resetBorder(this.id)"></audio>
+<br> 
+
+  <img id='5' src="5.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_5' src='Audio Track-5.mp3'onended="resetBorder(this.id)"></audio>
+<br> 
+
+  <img id='6' src="6.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_6' src='Audio Track-6.mp3'onended="resetBorder(this.id)"></audio>
+<br> 
+
+  <img id='7' src="7.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_7' src='Audio Track-7.mp3'onended="resetBorder(this.id)"></audio>
+<br> 
+
+  <img id='8' src="8.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_8' src='Audio Track-8.mp3'onended="resetBorder(this.id)"></audio>
+<br> 
+
+  <img id='9' src="9.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_9' src='Audio Track-9.mp3'onended="resetBorder(this.id)"></audio>
+<br> 
+
+  <img id='10' src="10.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_10' src='Audio Track-10.mp3'onended="resetBorder(this.id)"></audio>
+<br>  
+
+</body>
+</html>
