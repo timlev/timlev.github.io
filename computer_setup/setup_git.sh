@@ -1,0 +1,12 @@
+sudo apt install git;
+cd ~/;
+mkdir GitProjects;
+cd GitProjects;
+git clone https://github.com/timlev/timlev.github.io.git;
+git clone https://github.com/timlev/Learning-English-HTML.git;
+cd Learning-English-HTML;
+git checkout -b gh-pages origin/gh-pages;
+cd ~/GitProjects;
+git clone https://github.com/timlev/read-story.git;
+cd read-story;
+git checkout -b gh-pages origin/gh-pages;
