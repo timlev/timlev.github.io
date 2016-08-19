@@ -1,4 +1,7 @@
 sudo apt install git;
+git config --global user.email "timlev@gmail.com";
+git config --global user.name "Tim Leverentz";
+git config --global push.default simple;
 cd ~/;
 mkdir GitProjects;
 cd GitProjects;
