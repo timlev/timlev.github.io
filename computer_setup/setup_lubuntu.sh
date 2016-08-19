@@ -1,5 +1,5 @@
 #Get Dropbox and Google Chrome
-sudo echo "deb http://linux.dropbox.com/ubuntu xenial main" >> /etc/apt/sources.list;
+sudo sh -c 'echo "deb http://linux.dropbox.com/ubuntu xenial main" >> /etc/apt/sources.list';
 sudo apt-key adv --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E;
 sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -;
 sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list';
