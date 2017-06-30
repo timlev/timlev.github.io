@@ -1,0 +1,53 @@
+<html>
+<head>
+  <title>Appointment Conversation</title>
+  <script type="text/javascript">
+	function playId(id){
+	  console.log(id);
+	  document.getElementById(id).style.borderColor = "yellow";
+	  document.getElementById("audio_" + id).play(console.log("started"));
+	};
+	
+	function resetBorder(audio_id){
+		console.log(audio_id);
+		var id = audio_id.replace("audio_","");
+		document.getElementById(id).style.borderColor = "black";
+	}
+  </script>
+</head>
+
+<body>
+  <img id='1' src="1.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_1' src='1.wav' onended="resetBorder(this.id)"></audio>
+<br> 
+
+  <img id='2' src="2.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_2' src='2.wav'onended="resetBorder(this.id)"></audio>
+<br> 
+
+  <img id='3' src="3.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_3' src='3.wav'onended="resetBorder(this.id)"></audio>
+<br> 
+
+  <img id='4' src="4.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_4' src='4.wav'onended="resetBorder(this.id)"></audio>
+<br> 
+
+  <img id='5' src="5.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_5' src='5.wav'onended="resetBorder(this.id)"></audio>
+<br> 
+
+  <img id='6' src="6.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_6' src='6.wav'onended="resetBorder(this.id)"></audio>
+<br> 
+
+  <img id='7' src="7.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_7' src='7.wav'onended="resetBorder(this.id)"></audio>
+<br> 
+
+  <img id='8' src="8.png" onclick='playId(this.id)' border=1/>
+  <audio id='audio_8' src='8.wav'onended="resetBorder(this.id)"></audio>
+
+
+</body>
+</html>
