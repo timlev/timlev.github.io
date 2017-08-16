@@ -19,3 +19,13 @@ sudo apt install libmono-system-xml-linq4.0-cil libmono-system-data-datasetexten
 #https://help.ubuntu.com/community/Lubuntu/Documentation/CustomizingTheClock
 echo "Remember to set clock to\n %a %d %b %y  %I:%M %p";
 
+
+#sudo adduser wpstudent;
+#sudo touch /etc/lightdm/lightdm.conf;
+#echo "[SeatDefaults]
+#autologin-user=wpstudent
+#autologin-user-timeout=0
+## Check https://bugs.launchpad.net/lightdm/+bug/854261 before setting a timeout
+#user-session=Lubuntu
+#greeter-session=lightdm-gtk-greeter" > /etc/lightdm/lightdm.conf;
+
