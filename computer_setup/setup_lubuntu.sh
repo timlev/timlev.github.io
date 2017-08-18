@@ -20,12 +20,17 @@ sudo apt install libmono-system-xml-linq4.0-cil libmono-system-data-datasetexten
 echo "Remember to set clock to\n %a %d %b %y  %I:%M %p";
 
 
-#sudo adduser wpstudent;
-#sudo touch /etc/lightdm/lightdm.conf;
-#echo "[SeatDefaults]
-#autologin-user=wpstudent
-#autologin-user-timeout=0
-## Check https://bugs.launchpad.net/lightdm/+bug/854261 before setting a timeout
-#user-session=Lubuntu
-#greeter-session=lightdm-gtk-greeter" > /etc/lightdm/lightdm.conf;
+sudo adduser wpstudent;
+sudo touch /etc/lightdm/lightdm.conf;
+sudo echo "[SeatDefaults]" >> /etc/lightdm/lightdm.conf;
+sudo echo "autologin-user=wpstudent" >> /etc/lightdm/lightdm.conf;
+sudo echo "autologin-user-timeout=0" >> /etc/lightdm/lightdm.conf;
+sudo echo "# Check https://bugs.launchpad.net/lightdm/+bug/854261 before setting a timeout" >> /etc/lightdm/lightdm.conf;
+sudo echo "user-session=Lubuntu" >> /etc/lightdm/lightdm.conf;
+sudo echo "greeter-session=lightdm-gtk-greeter" >> /etc/lightdm/lightdm.conf;
 
+sudo apt install conky;
+
+sudo cp conky.conf /etc/conky/conky.conf;
+#sudo echo "conky &" >> /etc/xdg/lxsession/Lubuntu/autostart;
+su -c 'echo "conky" > /home/wpstudent/.config/autostart' wpstudent;
