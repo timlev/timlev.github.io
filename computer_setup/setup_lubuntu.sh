@@ -33,4 +33,4 @@ sudo apt install conky;
 
 sudo cp conky.conf /etc/conky/conky.conf;
 #sudo echo "conky &" >> /etc/xdg/lxsession/Lubuntu/autostart;
-su -c 'echo "conky" > /home/wpstudent/.config/autostart' wpstudent;
+su -c 'echo "@conky" > /home/wpstudent/.config/lxsession/Lubuntu/autostart' wpstudent;
