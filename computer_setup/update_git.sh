@@ -22,6 +22,8 @@ cd ../sound_board;
 git pull;
 cd ../timlev.github.io;
 git pull;
+cd ../download_wiktionary_word;
+git pull;
 cd ../high-frequency-word-master;
 git pull;
 cd ../sampleextension;

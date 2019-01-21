@@ -13,5 +13,6 @@ git clone https://github.com/timlev/Proxy-Hours.git;
 git clone https://github.com/timlev/read-story.git;
 git clone https://github.com/timlev/sound_board.git;
 git clone https://github.com/timlev/timlev.github.io.git;
+git clone https://github.com/timlev/download_wiktionary_word.git;
 git clone https://timlev@bitbucket.org/timlev/high-frequency-word-master.git;
 git clone https://timlev@bitbucket.org/timlev/sampleextension.git;
