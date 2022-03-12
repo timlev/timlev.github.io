@@ -21,8 +21,8 @@ gplist=("Bowls"
     "sampleextension");
 
 for project in "${gplist[@]}"; do
-    cd $GitProjectsDir;
-    cd $project;
+    cd "$GitProjectsDir";
+    cd "$project";
     echo "Updating $project"; 
     git pull;
 done
