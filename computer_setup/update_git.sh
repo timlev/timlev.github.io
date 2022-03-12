@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Define GitProjectsDir
-GitProjectsDir="~/GitProjects/";
+GitProjectsDir="$HOME/GitProjects/";
 
 #Define GitProjectsList declare -a 
 gplist=("Bowls"
