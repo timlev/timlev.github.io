@@ -14,7 +14,7 @@ gplist=("Bowls"
     "Proxy-Hours"
     "read-story"
     "sound_board"
-    "timlevhub.io"
+    "timlev.github.io"
     "download_wiktionary_word"
     "Pre-Literate-Curriculum"
     "high-frequency-word-master"
@@ -23,6 +23,7 @@ gplist=("Bowls"
 for project in "${gplist[@]}"; do
     cd "$GitProjectsDir";
     cd "$project";
+    pwd;
     echo "Updating $project"; 
     git pull;
 done
