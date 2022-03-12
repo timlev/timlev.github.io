@@ -1,30 +1,14 @@
-echo "Updating GitProjects in home dir";
-cd ~/GitProjects;
-cd Bowls;
-git pull;
-cd ../Crowd_Recorder;
-git pull;
-cd ../Sound-Spelling;
-git pull;
-cd ../Drag_n_Drop;
-git pull;
-cd ../eartrainer;
-git pull;
-cd ../Learning-English;
-git pull;
-cd ../Learning-English-HTML;
-git pull;
-cd ../Proxy-Hours;
-git pull;
-cd ../read-story;
-git pull;
-cd ../sound_board;
-git pull;
-cd ../timlev.github.io;
-git pull;
-cd ../download_wiktionary_word;
-git pull;
-cd ../high-frequency-word-master;
-git pull;
-cd ../sampleextension;
-git pull;
+#!/bin/bash
+
+#Define GitProjectsDir
+GitProjectsDir="~/GitProjects/"
+
+#Define GitProjectsList
+declare -a StringArray=("Bowls" "Sound-Spelling" "Crowd_Recorder" "Drag_n_Drop" "eartrainer" "Learning-English" "Learning-English-HTML" "Proxy-Hours" "read-story" "sound_board" "timlevhub.io" "download_wiktionary_word" "Pre-Literate-Curriculum" "high-frequency-word-master" "sampleextension")
+
+for project in ${StringArray[@]}; do
+    cd $GitProjectsDir;
+    cd $project;
+    echo "Updating $project"; 
+    git pull;
+done
