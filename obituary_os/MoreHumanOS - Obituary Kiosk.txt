@@ -1,0 +1,151 @@
+﻿MoreHumanOS - Obituary Kiosk
+
+
+An elder millennial shuffled toward the counter, rang the service bell, and read the dust-covered sign directing guests to the kiosk as all human operators were currently unavailable.
+
+
+
+
+AI Assistant has entered the chat.
+
+
+MoreHuman OS TM is very sorry for your loss.
+What services would you like to avail yourself of?
+1) obituaries, tributes, and eulogies
+2) funeral arrangements
+3) condolence messages
+4) other
+
+
+4
+
+
+I'm sorry that service has not been fully implemented yet. Look for our update in 3-4 months.
+What services would you like to avail yourself of?
+1) obituaries, tributes, and eulogies
+2) funeral arrangements
+3) condolence messages
+4) other (beta)
+
+
+
+
+1 I guess
+
+
+Excellent! Please enter your loved one's Tax ID Number.
+
+
+67698
+
+
+Ed Chapman
+Roseville, MN
+Deceased 7/19/59
+Is that information correct?
+
+
+He preferred to go by Edward.
+
+
+Input not valid. Is the above information correct? (Yes or No)
+
+
+Yes
+
+
+This will take a few moments. Your patience is appreciated.
+Importing cognitive files ...
+Processing ...
+Quantifying ...
+Sanitizing ...
+
+
+Profile:
+30% Sleeping, Limited REM !
+30% Work
+25% Food preparation / eating
+5% Family memories
+7% Bathroom phone time
+3% Other
+
+
+Peak emotional engagement:
+Deadlines, bathroom availability, uncertainty of what to say, birth of child #2
+
+
+First draft:
+Bathroom time was very important to Ed. Over 7000 memes were sent. What an accomplishment! Food preparation was also very significant. Favorite recipes included cereal from the box, tangy tuna mac, mac & cheese, and PBJ. His restaurant budget was significant.
+
+
+His love for bathroom availability was only eclipsed by his love for self-scrutiny and uncertainty of what to say. Deadlines and the birth of child #2 round out his waking, non-working hours.
+
+
+In his early years, he managed his IBS by blaming the family dog. This was …
+
+
+Cancel
+Abort
+Retry
+Aborting …
+Please choose from the following frequently requested options:
+1. Less focus on private medical data
+2. More focus on work
+3. More humorous/endearing stories
+4. More focus on accomplishments
+5. More focus on relationships
+
+
+3
+Second Draft (including more humorous/endearing stories):
+Ed loved a good laugh. He sent over 7000 memes with a 30% 🤣 response rate. What an accomplishment! Through major portions of his life, Ed enjoyed bathroom time and shared this joy with many through memes. In his early years, he managed his IBS by blaming the family dog. This was …
+
+
+Retry
+Retrying …
+Third Draft (including more humorous/endearing stories):
+
+
+Ed shared a lot of laughs, over 7000 with a 30% 🤣 response rate. What an …
+Retry with more focus on relationships.
+Please specify.
+1. Child #2
+2. Spouse #1
+3. Child #1
+4. Frank (childhood friend)
+5. Other
+
+
+Let’s start with 4, Frank.
+
+
+Regenerating …
+Fourth Draft (including more humorous/endearing stories and more focus on relationships):
+Ed accessed his memories with Frank frequently. The memory with the highest cortisol per second and most frequently accessed while intoxicated is a memory set in a treehouse. While fighting over a Power Ranger toy, Ed pushed Frank out of the tree. Memories to be treasured forever.
+Stop
+No, I want happy memories. Memories that fit with his values.
+Scanning …
+Analyzing …
+According to my analysis, Ed valued deadlines, bathroom availability, and memes. Do you want me to prioritize those?
+No, I mean values like love, relationships, generosity, and faith.
+Importing religious beliefs …
+Ed valued getting to church early to get the good seats near the back. Ed had a 49% church attendence record. Ed loved deadlines, bathroom availability, and memes. He had a strong 89% hymn lyric accuracy and only mumbled 10% of the time. During the sermon, he spent 20% of the time thinking about how much the church spent on air conditioning, 30% of the time thinking about the time, and nearly 40% thinking about how his family members could benefit from hearing this particular part of the sermon. He frequently focused his thoughts on how Child #1 could benefit from portions related to humility, hard work, and …
+Stop
+Do you have any generic options?
+Accessing …
+Yes, Obituary_1.02 has been a popular choice. Would you like to try that?
+For the love of God yes
+Ed Chapman of Roseville, MN died peacefully in his sleep on July 19, 2059. A service will be held at Peace Lutheran Church on Tuesday, July 29, 2059 at 11 AM. Parking is available on site. Ed was preceded in death by his wife Leverne (2053). Ed is survived by his two children. Jean and Martha. Donations can be made to the IBS Foundation.
+Good enough. How much will that cost?
+Cognitive Processing Fee: $700
+Computational Time: $35.9999999
+Religion Import: $85
+Memorial Tax: $10
+Total: $830.9999999
+
+
+Would you like to learn about the ad-supported options or tombstone sponsorships?
+No, I think I’ve had quite enough.
+
+
+Bereaved_67698_1 has left the chat.
