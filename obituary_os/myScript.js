@@ -50,11 +50,11 @@ Third Draft (including more humorous/endearing stories):<br>\
 <br>\
 Ed shared a lot of laughs, over 7000 with a 30% &#129315; response rate. What an &#8230;",
 "Please specify.<br>\
-1) Child #2<br>\
-2) Spouse #1<br>\
-3) Child #1<br>\
-4) Frank (childhood friend)<br>\
-5) Other",
+option_Child #2<br>\
+Spouse #1<br>\
+Child #1<br>\
+Frank (childhood friend)<br>\
+Other",
 "Regenerating &#8230;<br>\
 Fourth Draft (including more humorous/endearing stories and more focus on relationships):<br>\
 Ed accessed his memories with Frank frequently. The memory with the highest CPS (cortisol per second) and the most frequently accessed while intoxicated is a memory set in a treehouse. While fighting over a Power Ranger toy, Ed pushed Frank out of the tree. Memories to be treasured forever.",
