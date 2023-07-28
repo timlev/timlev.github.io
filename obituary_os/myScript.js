@@ -156,7 +156,10 @@ function parseOptions(msg_string){
 function leaveChat(){
   appendMessage(PERSON_NAME, PERSON_IMG, "right", USR_MSGS[USR_MSGS.length -1]);
   txtBox.value = "<i>Bereaved_67698_1 has left the chat.</i>";
+  document.getElementById("text").innerHTML =  "<center><i>Bereaved_67698_1 has left the chat.</i></center>";
   get(".msger-send-btn").hidden = true;
+  on();
+
 }
 
 var bi = 0;
