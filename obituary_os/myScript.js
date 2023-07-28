@@ -84,7 +84,7 @@ Total: $380.9999999",
 ];
 
 const USR_MSGS = ["two", "One, I guess", "67698","He preferred to go by Edward", "yes","never","skip", "retry", "3", "Retry", "Retry with more focus on relationships", "Let's start with 4, Frank.", "Stop<br>No, I want happy memories. Memories that fit with is values.", "No, I mean values like love, relationships, generosity, and faith", "stop<br>Do you have any generic options?", "for the love of god yes", "Good enough. How much will that cost?", "wow!","No, I think I've had quite enough."]// Icons made by Freepik from www.flaticon.com
-const BOT_IMG = "https://image.flaticon.com/icons/svg/327/327779.svg";
+const BOT_IMG = "robot.png";
 const PERSON_IMG = "https://image.flaticon.com/icons/svg/145/145867.svg";
 const BOT_NAME = "Artificial Assistant";
 var PERSON_NAME = "User_1245";
