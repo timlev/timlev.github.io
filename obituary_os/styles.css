@@ -193,3 +193,74 @@ ul {
   transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
 }
+
+/* SVG styles. */
+svg {
+  animation: 2s linear 1 svg-animation;
+  max-width: 100px;
+}
+
+/* SVG animation. */
+@keyframes svg-animation {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg)
+  }
+}
+
+/* Circle styles. */
+circle {
+  animation: 2s ease-in-out both circle-animation;
+  display: block;
+  fill: transparent;
+  stroke: #622E50;
+  stroke-linecap: round;
+  stroke-dasharray: 283;
+  stroke-dashoffset: 280;
+  stroke-width: 10px;
+  transform-origin: 50% 50%;
+  margin-top: 75%;
+  animation-iteration-count: 1;
+
+}
+
+.option {
+  border-radius: 24px;
+  background: linear-gradient(0deg, var(--dark-transparent, rgba(98, 46, 80, 0.10)) 0%, var(--dark-transparent, rgba(98, 46, 80, 0.10)) 100%), var(--bg-transparent, rgba(249, 172, 156, 0.50));
+  display: flex;
+  padding: 10px 10px 10px 18px;
+  align-items: flex-start;
+  gap: 14px;
+}
+.number {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  border-radius: 80px;
+  background: var(--light-transparent, rgba(255, 255, 255, 0.66));
+}
+
+/* Circle animation. */
+@keyframes circle-animation {
+  0%,
+  25% {
+    stroke-dashoffset: 280;
+    transform: rotate(0);
+  }
+  
+  50%,
+  75% {
+    stroke-dashoffset: 75;
+    transform: rotate(45deg);
+  }
+  
+  100% {
+    stroke-dashoffset: 280;
+    transform: rotate(360deg);
+  }
+}
