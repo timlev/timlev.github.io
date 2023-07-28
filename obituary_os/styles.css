@@ -3,7 +3,7 @@
   --msger-bg: #fff;
   --border: 2px solid #ddd;
   --left-msg-bg: #ececec;
-  --right-msg-bg: rgba(43,9,31);
+  --right-msg-bg: #622E50;
 }
 
 html {
@@ -18,13 +18,19 @@ html {
   box-sizing: inherit;
 }
 
+@font-face {
+  font-family: Lexend;
+  src: url(Lexend-VariableFont_wght.ttf);
+}
 body {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background-image: var(--body-bg);
-  font-family: Helvetica, sans-serif;
+  /* font-family: Helvetica, sans-serif; */
+  font-family: Lexend;
+  src: url(Lexend-VariableFont_wght.ttf);
 }
 
 .msger {
@@ -154,7 +160,7 @@ ul {
 }
 .msger-chat {
   background-color: #fcfcfe;
-  background-image: url("pink-sky-sunset-gradient-mountains-landscape-beautiful-1290x2796-3162.jpg");
+  background-image: url("bg.png");
   /* background-image: url("cracked_tombstone_small_light_gray.png"); */
   /* background-image: url("pngfind.com-cemetery-png-1587699_small.png"); */
   /* background-repeat: repeat; */
@@ -173,7 +179,7 @@ ul {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(43,9,31,0.90); /* Black background with opacity */
+  background-color: #270B1E; /* Black background with opacity */
   z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
   cursor: pointer; /* Add a pointer on hover */
 }
