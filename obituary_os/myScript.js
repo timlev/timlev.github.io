@@ -5,13 +5,15 @@ const msgerChat = get(".msger-chat");
 const BOT_MSGS = [
   "I'm sorry that service has not been fully implemented yet. Look for our update in 3-4 months.<br>\
 What services would you like to avail yourself of?<br>\
-1) Obituaries, tributes, and eulogies<br>\
-2) Funeral arrangements<br>\
-3) Condolence messages (BETA)<br>\
-4) Other",
+option_Obituaries, tributes, and eulogies<br>\
+Funeral arrangements<br>\
+Condolence messages (BETA)<br>\
+Other",
 "Excellent! Please enter your loved one's Tax ID Number.", "<img src='Text Box.svg'></img><br>\
 Is that information correct?",
-"Input not valid. Is the above information correct? (Yes or No)",
+"Input not valid. Is the above information correct?<br>\
+option_Yes<br>\
+No",
 "This will take a few moments. Your patience is appreciated.<br>\
 Importing cognitive files &#8230;<br>\
 Processing &#8230;<br>\
@@ -19,12 +21,12 @@ Quantifying &#8230;<br>\
 Sanitizing &#8230;<br>\
 Would you like to use the neuralink to simplify the import process?",
 "Please select your relationship to Ed:<br>\
-1) Child #2 <br>\
-2) Spouse #1 <br>\
-3) Child #1 <br>\
-4) Frank (childhood friend)<br>\
-5) Other (please specify)<br>\
-6) Skip",
+option_Child #2 <br>\
+Spouse #1 <br>\
+Child #1 <br>\
+Frank (childhood friend)<br>\
+Other (please specify)<br>\
+Skip",
 "Profile:<br>\
 <img src='Text Box2.png'></img><br>\
 <br>\
@@ -36,11 +38,11 @@ His love for bathroom availability was only eclipsed by his love for self-scruti
 In his early years, he managed his IBS by blaming the family dog. This was &#8230",
 "Aborting &#8230;<br>\
 Please choose from the following frequently requested options:<br>\
-1) Less focus on private medical data<br>\
-2) More focus on work<br>\
-3) More humorous/endearing stories<br>\
-4) More focus on accomplishments<br>\
-5) More focus on relationships",
+option_Less focus on private medical data<br>\
+More focus on work<br>\
+More humorous/endearing stories<br>\
+More focus on accomplishments<br>\
+More focus on relationships",
 "Second Draft (including more humorous/endearing stories):<br>\
 Ed loved a good laugh. He sent over 7000 memes with a 30% &#129315; response rate. What an accomplishment! Through major portions of his life, Ed enjoyed bathroom time and shared this joy with many through memes. His most successful memes were based on dog portraits. On that note, in his early years, he managed his IBS by blaming the family dog. This was &#8230;",
 "Retrying &#8230;<br>\
@@ -125,7 +127,32 @@ function appendMessage(name, img, side, text) {
   msgerChat.insertAdjacentHTML("beforeend", msgHTML);
   msgerChat.scrollTop += 500;
 }
+function appendOption(option, number){
+  const msgHTML = `
+  <div class="msg option right-msg">
+    <div class="option">${option}
+        <div class="number">${number}</div></div>
+    </div>
+  `;
 
+  msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+  msgerChat.scrollTop += 500;
+}
+
+function parseOptions(msg_string){
+  var full_message = msg_string.split("option_");
+  console.log(full_message[0]);
+  appendMessage(BOT_NAME, BOT_IMG, "left", full_message[0]);
+  var options = full_message[1].split("<br>");
+  console.log(options);
+  options.forEach(element => {
+    appendOption(element,options.indexOf(element) + 1);
+    console.log(element);
+    console.log(options.indexOf(element));
+  });
+  bi += 1;
+  setUserText();
+}
 function leaveChat(){
   appendMessage(PERSON_NAME, PERSON_IMG, "right", USR_MSGS[USR_MSGS.length -1]);
   txtBox.value = "<i>Bereaved_67698_1 has left the chat.</i>";
@@ -156,11 +183,15 @@ document.onload = initialize();
 function botResponse() {
   const msgText = BOT_MSGS[bi];
   const delay = msgText.split(" ").length * 50;
-
+  if (BOT_MSGS[bi].includes("option_")){
+    parseOptions(BOT_MSGS[bi]);
+  }
+  else {
   setTimeout(() => {
     appendMessage(BOT_NAME, BOT_IMG, "left", msgText);  bi += 1;
     setUserText();
   }, delay);
+}
 
 }
 
