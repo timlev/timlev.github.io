@@ -153,6 +153,27 @@ function parseOptions(msg_string){
   bi += 1;
   setUserText();
 }
+
+function parseProcessing(){
+  // Parse items with &#8230; in them
+}
+const delay = (delayInms) => {
+  return new Promise(resolve => setTimeout(resolve, delayInms));
+}
+async function thinking(task){
+  var think_div_html = `
+    <div id="think_div">
+    <div id="think_div_text">${task}</div>
+      <svg id ="circle" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="45"/>
+      </svg>
+    </div>
+    `;
+    msgerChat.insertAdjacentHTML("beforeend", think_div_html);
+    msgerChat.scrollTop += 500;
+    await delay(2000);
+    document.getElementById("think_div").remove();
+}
 function leaveChat(){
   appendMessage(PERSON_NAME, PERSON_IMG, "right", USR_MSGS[USR_MSGS.length -1]);
   txtBox.value = "<i>Bereaved_67698_1 has left the chat.</i>";
@@ -180,6 +201,7 @@ function initialize(){
   on();
   setInitialTime();
   setUserText();
+  thinking("Thinking...");
 }
 document.onload = initialize();
 
