@@ -1,7 +1,7 @@
 const msgerForm = get(".msger-inputarea");
 const msgerInput = get(".msger-input");
 const msgerChat = get(".msger-chat");
-
+var msgIndex = 0;
 const ALL_MSGS = [['user', 'two'],
 ['bot', "I'm sorry that service has not been fully implemented yet. Look for our update in 3-4 months.<br>What services would you like to avail yourself of?"],
 ['options', "Obituaries, tributes, and eulogies<br>Funeral arrangements<br>Condolence messages [BETA],<br>Other"],
@@ -185,9 +185,7 @@ function leaveChat(){
 
 }
 
-var bi = 0;
-var usr = 0;
-var msgIndex = 0;
+
 
 function setUserText(){
   txtBox = get(".msger-input");
