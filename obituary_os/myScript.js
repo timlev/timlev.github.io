@@ -2,7 +2,8 @@ const msgerForm = get(".msger-inputarea");
 const msgerInput = get(".msger-input");
 const msgerChat = get(".msger-chat");
 var msgIndex = 0;
-const ALL_MSGS = [['user', 'two'],
+const ALL_MSGS = [['processing', 'Thinking &#8230;'],
+['user', 'two'],
 ['bot', "I'm sorry that service has not been fully implemented yet. Look for our update in 3-4 months.<br>What services would you like to avail yourself of?"],
 ['options', "Obituaries, tributes, and eulogies<br>Funeral arrangements<br>Condolence messages [BETA],<br>Other"],
 ['user', 'One, I guess'],
@@ -18,7 +19,7 @@ const ALL_MSGS = [['user', 'two'],
 ['bot', 'Would you like to use the neuralink to simplify the import process?'],
 ['user', 'never'],
 ['bot', 'Please select your relationship to Ed:'],
-['options', 'Child #2 <br>Spouse #1 <br>Child #1 <br>Frank [childhood friend],<br>Other [please specify],<br>Skip'],
+['options', 'Child #2 <br>Spouse #1 <br>Child #1 <br>Frank (childhood friend)<br>Other (please specify)<br>Skip'],
 ['user', 'skip'],
 ['bot', "Profile:<br><img src='Text Box2.png'></img><br><br>First draft:<br>Bathroom time was very important to Ed. Over 7000 memes were sent. What an accomplishment! Food preparation was also very significant. Favorite recipes included cereal from the box, tangy tuna mac, mac & cheese, and PBJ. His restaurant budget was significant.<br><br>His love for bathroom availability was only eclipsed by his love for self-scrutiny and uncertainty of what to say. Deadlines for work and the birth of child #2 round out his waking, non-working-hour emotional engagement.<br><br>In his early years, he managed his IBS by blaming the family dog. This was &#8230"],
 ['user', 'retry'],
@@ -26,16 +27,16 @@ const ALL_MSGS = [['user', 'two'],
 ['bot', 'Please choose from the following frequently requested options:'],
 ['options', 'Less focus on private medical data<br>More focus on work<br>More humorous/endearing stories<br>More focus on accomplishments<br>More focus on relationships'],
 ['user', '3'],
-['bot', 'Second Draft [including more humorous/endearing stories],:<br>Ed loved a good laugh. He sent over 7000 memes with a 30% &#129315; response rate. What an accomplishment! Through major portions of his life, Ed enjoyed bathroom time and shared this joy with many through memes. His most successful memes were based on dog portraits. On that note, in his early years, he managed his IBS by blaming the family dog. This was &#8230;'],
+['bot', 'Second Draft (including more humorous/endearing stories):<br>Ed loved a good laugh. He sent over 7000 memes with a 30% &#129315; response rate. What an accomplishment! Through major portions of his life, Ed enjoyed bathroom time and shared this joy with many through memes. His most successful memes were based on dog portraits. On that note, in his early years, he managed his IBS by blaming the family dog. This was &#8230;'],
 ['user', 'Retry'],
 ['processing', 'Retrying &#8230;'],
-['bot', 'Third Draft [including more humorous/endearing stories],:<br><br>Ed shared a lot of laughs, over 7000 with a 30% &#129315; response rate. What an &#8230;'],
+['bot', 'Third Draft (including more humorous/endearing stories):<br><br>Ed shared a lot of laughs, over 7000 with a 30% &#129315; response rate. What an &#8230;'],
 ['user', 'Retry with more focus on relationships'],
 ['bot', 'Please specify.'],
 ['options', 'Child #2<br>Spouse #1<br>Child #1<br>Frank [childhood friend],<br>Other'],
 ['user', "Let's start with 4, Frank."],
 ['processing', 'Regenerating &#8230;'],
-['bot', 'Fourth Draft [including more humorous/endearing stories and more focus on relationships],:<br>Ed accessed his memories with Frank frequently. The memory with the highest CPS [cortisol per second], and the most frequently accessed while intoxicated is a memory set in a treehouse. While fighting over a Power Ranger toy, Ed pushed Frank out of the tree. Memories to be treasured forever.'],
+['bot', 'Fourth Draft (including more humorous/endearing stories and more focus on relationships):<br>Ed accessed his memories with Frank frequently. The memory with the highest CPS (cortisol per second), and the most frequently accessed while intoxicated is a memory set in a treehouse. While fighting over a Power Ranger toy, Ed pushed Frank out of the tree. Memories to be treasured forever.'],
 ['user', 'Stop<br>No, I want happy memories. Memories that fit with is values.'],
 ['processing', 'Scanning &#8230;<br>Analyzing &#8230;'],
 ['bot', 'According to my attention chronology analysis, Ed valued work deadlines, bathrooms, and memes. Do you want me to prioritize those?'],
@@ -46,7 +47,7 @@ const ALL_MSGS = [['user', 'two'],
 ['processing', 'Accessing &#8230;'],
 ['bot', 'Yes, Obituary_1.02 has been a popular choice. Would you like to try that?'],
 ['user', 'for the love of god yes'],
-['bot', "<img src='Text Box.svg'></img><br>Ed Chapman of Roseville, MN died peacefully in his sleep on July 19, 2059. A service will be held at Peace Lutheran Church on Tuesday, July 29, 2059 at 11 AM. Parking is available on site. Ed was preceded in death by his wife Leverne [2053],. Ed is survived by his two children, Jean and Martha. Donations can be made to the IBS Foundation."],
+['bot', "<img src='Text Box.svg'></img><br>Ed Chapman of Roseville, MN died peacefully in his sleep on July 19, 2059. A service will be held at Peace Lutheran Church on Tuesday, July 29, 2059 at 11 AM. Parking is available on site. Ed was preceded in death by his wife Leverne (2053). Ed is survived by his two children, Jean and Martha. Donations can be made to the IBS Foundation."],
 ['user', 'Good enough. How much will that cost?'],
 ['receipt', 'Cognitive Processing Fee: $250<br>Computational Time: $35.9999999<br>Religion Import: $85<br>Memorial Tax: $10<br>Total: $380.9999999'],
 ['user', 'wow!'],
@@ -88,18 +89,26 @@ function processMessage(){
   switch (ALL_MSGS[msgIndex][0]) {
     case "user":
       setUserText();
+      break;
     case "bot":
       botResponse();
+      break;
     case "receipt":
       //Temporary
       botResponse();
+      break;
     case "processing":
+      setTimeout(() => {},2000);
       parseProcessing(ALL_MSGS[msgIndex][1]);
+      break;
     case "chat":
         //Temporary
         botResponse();
+        break;
     case "options":
-      parseOptions(ALL_MSGS[msgIndex][1])
+      setTimeout(() => {},2000);
+      parseOptions(ALL_MSGS[msgIndex][1]);
+      break;
   }
 }
 
@@ -153,6 +162,7 @@ function parseProcessing(){
   tasks.forEach(element => {
     thinking(element);
   });
+  delay(2000);
   msgIndex += 1;
   processMessage();
 
@@ -173,8 +183,8 @@ async function thinking(task){
     msgerChat.scrollTop += 500;
     await delay(2000);
     document.getElementById("think_div").remove();
-    msgIndex += 1;
-    processMessage()
+    // msgIndex += 1;
+    // processMessage()
 }
 function leaveChat(){
   appendMessage(PERSON_NAME, PERSON_IMG, "right", ALL_MSGS[msgIndex][1]);
@@ -191,7 +201,7 @@ function setUserText(){
   txtBox = get(".msger-input");
   txtBox.value = ALL_MSGS[msgIndex][1];
   msgIndex += 1;
-  if (ALL_MSGS[msgIndex - 2][1] == "67698") {
+  if (msgIndex == 9) {
     PERSON_NAME = "Bereaved_67698_1";
   }
 };
@@ -199,7 +209,7 @@ function setUserText(){
 function initialize(){
   on();
   setInitialTime();
-  thinking("Thinking...");
+  // thinking("Thinking...");
   processMessage();
 };
 document.onload = initialize();
@@ -209,10 +219,10 @@ function botResponse() {
   const delay = msgText.split(" ").length * 50;
   setTimeout(() => {
     appendMessage(BOT_NAME, BOT_IMG, "left", msgText);
-
+      msgIndex += 1;
+      processMessage();
   }, delay);
-  msgIndex += 1;
-  processMessage();
+
 }
 
 // Utils
@@ -237,3 +247,4 @@ function on() {
 function off() {
   document.getElementById("overlay").style.display = "none";
 }
+
