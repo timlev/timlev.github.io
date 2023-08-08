@@ -56,7 +56,7 @@ const ALL_MSGS = [['processing', 'Thinking &#8230;'],
 ['chat', "<center><i>Bereaved_67698_1 has left the chat.</i></center>"]]
 
 const BOT_IMG = "Bot.svg";
-const PERSON_IMG = "https://image.flaticon.com/icons/svg/145/145867.svg";
+const PERSON_IMG = "user.png";
 const BOT_NAME = "Artificial Assistant";
 var PERSON_NAME = "User_1245";
 
@@ -102,8 +102,7 @@ function processMessage(){
       parseProcessing(ALL_MSGS[msgIndex][1]);
       break;
     case "chat":
-        //Temporary
-        botResponse();
+        leaveChat();
         break;
     case "options":
       setTimeout(() => {},2000);
