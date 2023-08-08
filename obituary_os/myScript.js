@@ -157,23 +157,19 @@ function parseOptions(msg_string){
 }
 
 function parseProcessing(){
+  var delayTime = 1500;
   // Parse items with &#8230; in them
   var tasks = ALL_MSGS[msgIndex][1].split("<br>");
-  tasks.forEach(element => {
-    thinking(element);
-  });
-  delay(2000);
-  msgIndex += 1;
-  processMessage();
-
+  console.log(tasks.length);
+  thinking(tasks, 0, 1500);
 }
 const delay = (delayInms) => {
   return new Promise(resolve => setTimeout(resolve, delayInms));
 }
-async function thinking(task){
+function thinking(tasks,taskIndex, delayTime){
   var think_div_html = `
     <div id="think_div">
-    <div id="think_div_text">${task}</div>
+    <div id="think_div_text">${tasks[taskIndex]}</div>
       <svg id ="circle" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <circle cx="50" cy="50" r="45"/>
       </svg>
@@ -181,8 +177,22 @@ async function thinking(task){
     `;
     msgerChat.insertAdjacentHTML("beforeend", think_div_html);
     msgerChat.scrollTop += 500;
-    await delay(2000);
-    document.getElementById("think_div").remove();
+    taskIndex += 1;
+    if (taskIndex == tasks.length){
+      setTimeout(() => {
+        document.getElementById("think_div").remove();
+        msgIndex += 1;
+        processMessage();
+      }, delayTime);
+    } else {
+      setTimeout(() => {
+        document.getElementById("think_div").remove();
+        thinking(tasks, taskIndex, delayTime);
+      }, delayTime);
+    }
+    // delay(2000);
+
+    
     // msgIndex += 1;
     // processMessage()
 }
