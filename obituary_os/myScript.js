@@ -261,11 +261,24 @@ function get(selector, root = document) {
 // function random(min, max) {
 //   return Math.floor(Math.random() * (max - min) + min);
 // }
+
+function openFullscreen() {
+  var elem = document.documentElement;
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    elem.msRequestFullscreen();
+  }
+}
+
 function on() {
   document.getElementById("overlay").style.display = "block";
 }
 
 function off() {
+  openFullscreen();
   document.getElementById("overlay").style.display = "none";
 }
 
