@@ -60,6 +60,11 @@ const PERSON_IMG = "user.png";
 const BOT_NAME = "Artificial Assistant";
 var PERSON_NAME = "User_1245";
 
+function scroll(){
+  var main = document.getElementById("main");
+  main.scrollTo(0, main.scrollHeight);
+  console.log("scrolling");
+}
 msgerForm.addEventListener("submit", event => {
   event.preventDefault();
 
@@ -70,9 +75,12 @@ msgerForm.addEventListener("submit", event => {
   msgerInput.value = "";
 
   processMessage();
+   var main = document.getElementById("main");
+  main.scrollTo(0, main.scrollHeight);
 });
 document.getElementById("overlay").addEventListener("click", event => {
   off();
+  scroll();
 });
 
 function setInitialTime(){
@@ -129,7 +137,8 @@ function appendMessage(name, img, side, text) {
   `;
 
   msgerChat.insertAdjacentHTML("beforeend", msgHTML);
-  msgerChat.scrollTop += 500;
+  // msgerChat.scrollTop += 500;
+  scroll();
 }
 function appendOption(option, number){
   const msgHTML = `
@@ -213,6 +222,7 @@ function setUserText(){
   if (msgIndex == 9) {
     PERSON_NAME = "Bereaved_67698_1";
   }
+  scroll();
 };
 
 function initialize(){
@@ -231,6 +241,8 @@ function botResponse() {
       msgIndex += 1;
       processMessage();
   }, delay);
+  var main = document.getElementById("main");
+  main.scrollTo(0, main.scrollHeight);
 
 }
 
