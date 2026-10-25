@@ -1,0 +1,592 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Rainbow Letter Builder</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap">
+<style>
+/* Layout: chalkboard-style tool. Letter picker on top, big writing stage left, step cards right. */
+:root{
+  --bg:#EEF2F6; --surface:#FFFFFF; --paper:#FFFFFF; --ink:#1C2333; --muted:#5A6377; --line:#D5DCE6;
+  --accent:#0F6B78; --accent-ink:#FFFFFF; --lift:#B4245A;
+  --pl-top:#8C97AB; --pl-mid:#B8C1D0; --pl-base:#4F5B70; --pl-desc:#D3D9E3; --ghost:#E3E8EF; --case:rgba(20,25,40,.20);
+  --r1:#E5383B; --r2:#F77F00; --r3:#F2BE00; --r4:#2BA84A; --r5:#1E7FD9; --r6:#4B3FB8; --r7:#9B3DC4;
+  --font:"Andika","Comic Neue","Trebuchet MS",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#12161F; --surface:#1B2130; --paper:#1F2636; --ink:#EEF1F6; --muted:#A3ADC2; --line:#2D3548;
+  --accent:#4FB8C4; --accent-ink:#0C1218; --lift:#FF7AA8;
+  --pl-top:#6E7890; --pl-mid:#4B5468; --pl-base:#AEB7C9; --pl-desc:#353D50; --ghost:#2C3446; --case:rgba(0,0,0,.45);
+  --r1:#FF5A5D; --r2:#FF9628; --r3:#FFD233; --r4:#3CC463; --r5:#4AA3F0; --r6:#8378F0; --r7:#C06BE6;
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#12161F; --surface:#1B2130; --paper:#1F2636; --ink:#EEF1F6; --muted:#A3ADC2; --line:#2D3548;
+  --accent:#4FB8C4; --accent-ink:#0C1218; --lift:#FF7AA8;
+  --pl-top:#6E7890; --pl-mid:#4B5468; --pl-base:#AEB7C9; --pl-desc:#353D50; --ghost:#2C3446; --case:rgba(0,0,0,.45);
+  --r1:#FF5A5D; --r2:#FF9628; --r3:#FFD233; --r4:#3CC463; --r5:#4AA3F0; --r6:#8378F0; --r7:#C06BE6;
+  color-scheme:dark }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.45}
+.wrap{max-width:1180px;margin:0 auto;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:18px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px}
+h1{font-size:clamp(1.6rem,3.2vw,2.3rem);margin:0;line-height:1.1;text-wrap:balance}
+h1 .rb span{display:inline-block}
+.sub{margin:4px 0 0;color:var(--muted);max-width:60ch}
+.legend{display:flex;gap:6px;flex-wrap:wrap;list-style:none;margin:0;padding:0}
+.legend li{display:flex;align-items:center;gap:5px;font-size:.85rem;color:var(--muted)}
+.legend b{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:.8rem}
+.legend li:nth-child(3) b{color:#3a2c00}
+
+.picker{display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
+.seg{display:inline-flex;border:2px solid var(--accent);border-radius:999px;overflow:hidden;flex:none}
+.seg button{font:inherit;font-weight:700;font-size:1.05rem;border:0;background:transparent;color:var(--accent);padding:6px 16px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.abc{display:flex;flex-wrap:wrap;gap:5px;flex:1 1 320px;min-width:0}
+.abc button{font:inherit;font-weight:700;font-size:1.15rem;min-width:44px;height:44px;border-radius:10px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;padding:0 6px}
+.abc button:hover{border-color:var(--accent)}
+.abc button[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+button:focus-visible{outline:3px solid var(--r5);outline-offset:2px}
+
+.main{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:860px){.main{grid-template-columns:minmax(0,1fr)}}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:12px;min-width:0}
+.board{background:var(--paper);border-radius:12px;border:1px solid var(--line);display:grid;place-items:center;padding:6px;aspect-ratio:4/3;max-width:100%}
+.board svg{width:100%;height:100%;max-height:60vh}
+.caption{display:flex;align-items:center;gap:12px;min-height:58px;padding:0 4px}
+.caption .num{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:1.5rem}
+.caption .num.yel{color:#3a2c00}
+.caption .say{font-size:1.45rem;font-weight:700;line-height:1.15}
+.caption .move{color:var(--muted);font-size:1rem}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font:inherit;font-weight:700;font-size:1rem;border-radius:999px;border:2px solid var(--accent);background:transparent;color:var(--accent);padding:8px 16px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.controls .sp{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:.95rem}
+select{font:inherit;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+label.chk{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+
+.steps{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:10px;min-width:0}
+.steps h2{margin:0;font-size:1.15rem}
+.steps p.hint{margin:0;color:var(--muted);font-size:.92rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.card{font:inherit;color:inherit;text-align:left;background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:6px 8px 10px;cursor:pointer;display:grid;gap:4px}
+.card:hover{border-color:var(--accent)}
+.card.on{border-color:var(--cc)}
+.card svg{width:100%;aspect-ratio:1/1.05;display:block}
+.card .lab{display:flex;gap:6px;align-items:flex-start;font-weight:700;line-height:1.2}
+.card .lab i{font-style:normal;flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:.85rem;background:var(--cc)}
+.card .lab i.yel{color:#3a2c00}
+.card .mv{color:var(--muted);font-size:.85rem;padding-left:28px}
+.card .mv.lift,.caption .move.lift{color:var(--lift);font-weight:700}
+.card .mv.lift::before,.caption .move.lift::before{content:"\2191 ";}
+.lift-say{fill:var(--lift);font:700 11px var(--font);text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:3px}
+.note{color:var(--muted);font-size:.9rem;margin:0}
+
+/* SVG letter pieces */
+.pl{stroke-width:1.2;vector-effect:non-scaling-stroke}
+.pl-top{stroke:var(--pl-top)} .pl-mid{stroke:var(--pl-mid);stroke-dasharray:6 5}
+.pl-base{stroke:var(--pl-base);stroke-width:2} .pl-desc{stroke:var(--pl-desc);stroke-dasharray:2 4}
+.ghost path{fill:none;stroke:var(--ghost);stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+.ghost circle{fill:var(--ghost)}
+.ghost.off{display:none}
+.case{fill:none;stroke:var(--case);stroke-width:10.5;stroke-linecap:round;stroke-linejoin:round}
+.dot-case{fill:var(--case)}
+.ink{fill:none;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
+.retrace .ink{stroke-width:3}
+.retrace .case{stroke-width:5}
+.badge text{fill:#fff;font:700 8.5px var(--font);text-anchor:middle;dominant-baseline:central}
+.badge[data-ci="2"] text{fill:#3a2c00}
+.stroke-g.done .ink,.stroke-g.done .dot,.stroke-g.done .arrow{opacity:.38}
+.stroke-g.done .case,.stroke-g.done .dot-case{opacity:0}
+.tip{fill:var(--ink);stroke:var(--paper);stroke-width:2}
+.tip.up{fill:var(--paper);stroke:var(--ink);stroke-width:2;stroke-dasharray:3 2}
+.hop{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:3 4;vector-effect:non-scaling-stroke}
+
+/* looping step animation in the cards */
+.card .current .ink{stroke-dasharray:1 2;animation:draw var(--dur,1.8s) ease-in-out infinite}
+.card .current .case{opacity:0}
+.card .current .arrow{animation:arr var(--dur,1.8s) linear infinite}
+.card .current .dot{transform-box:fill-box;transform-origin:center;animation:pop 1.8s ease-out infinite}
+@keyframes draw{0%{stroke-dashoffset:1}12%{stroke-dashoffset:1}72%{stroke-dashoffset:0}100%{stroke-dashoffset:0}}
+@keyframes arr{0%,71%{opacity:0}74%,100%{opacity:1}}
+@keyframes pop{0%,20%{transform:scale(0)}45%{transform:scale(1.3)}60%,100%{transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){.card .current .ink,.card .current .arrow,.card .current .dot{animation:none;stroke-dashoffset:0}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Rainbow Letter Builder</h1>
+      <p class="sub">Every stroke gets the next rainbow color, and the colors keep going from one letter to the next (A, a, B, b ...). Start at the numbered dot and follow the arrow. When it says <b style="color:var(--lift)">&uarr; Pick up your pencil</b>, lift it before the next stroke. Directions follow the CORE letter formation scripts (Least column).</p>
+    </div>
+    <ol class="legend" aria-label="Rainbow color order">
+      <li><b style="background:var(--r1)"></b>Red</li><li><b style="background:var(--r2)"></b>Orange</li><li><b style="background:var(--r3)"></b>Yellow</li><li><b style="background:var(--r4)"></b>Green</li><li><b style="background:var(--r5)"></b>Blue</li><li><b style="background:var(--r6)"></b>Indigo</li><li><b style="background:var(--r7)"></b>Violet</li>
+    </ol>
+  </header>
+
+  <nav class="picker" aria-label="Choose a letter or number">
+    <div class="seg" role="group" aria-label="Letters or numbers">
+      <button id="caseUpper" aria-pressed="true">ABC</button>
+      <button id="caseLower" aria-pressed="false">abc</button>
+      <button id="caseNum" aria-pressed="false">123</button>
+    </div>
+    <div class="abc" id="abc"></div>
+  </nav>
+
+  <div class="main">
+    <section class="stage" aria-label="Writing board">
+      <div class="board" id="board"></div>
+      <div class="caption" id="caption" aria-live="polite"></div>
+      <div class="controls">
+        <button class="btn primary" id="playAll">&#9654; Watch the whole letter</button>
+        <button class="btn" id="prev" aria-label="Previous step">&#9664; Back</button>
+        <button class="btn" id="next">Next step &#9654;</button>
+        <div class="sp">
+          <label for="speed">Speed</label>
+          <select id="speed"><option value="1.7">Slow</option><option value="1" selected>Medium</option><option value="0.6">Fast</option></select>
+          <label class="chk"><input type="checkbox" id="ghost" checked> Tracing guide</label>
+        </div>
+      </div>
+    </section>
+
+    <section class="steps" aria-label="Steps">
+      <h2 id="stepsTitle">Steps</h2>
+      <p class="hint">Each card replays one step. Tap a card to show that step on the big board.</p>
+      <div class="cards" id="cards"></div>
+      <p class="note">Keyboard: Space plays the whole letter, arrow keys move step by step.</p>
+    </section>
+  </div>
+</div>
+
+<script>
+// Stroke data following the CORE Letter Formation Scripts, "Least" column.
+// Coordinates: top line y=0, mid line y=50, base line y=100, descender y=150.
+// Each stroke: [svg path, words to say, how the pencil gets there, flag]
+// move: start | keep (pencil stays down) | jump (pick up pencil) | top (pick up pencil, back to the top) | dot
+// flag: "r" = retrace (drawn as a thin line on top of the line it goes back over)
+//       "u" = starts by going back up a line, so it is drawn underneath the earlier strokes
+const LETTERS = {
+upper: {
+A:{w:70,s:[["M35,0 L5,100","Slant down left","start"],["M35,0 L65,100","Slant down right","top"],["M17,62 L53,62","Across","jump"]]},
+B:{w:60,s:[["M10,0 L10,100","Straight down","start"],["M10,0 C55,0 55,50 10,50","Around right","top"],["M10,50 C62,50 62,100 10,100","Around again","keep"]]},
+C:{w:72,s:[["M61.5,17.9 A32,50 0 1 0 61.5,82.1","Around left, stop","start"]]},
+D:{w:66,s:[["M10,0 L10,100","Straight down","start"],["M10,0 C48,0 62,22 62,50 C62,80 48,100 28,100 L10,100","Around right","top"]]},
+E:{w:58,s:[["M10,0 L10,100","Straight down","start"],["M10,0 L55,0","Across top","top"],["M10,50 L48,50","Across middle","jump"],["M10,100 L55,100","Across bottom","jump"]]},
+F:{w:58,s:[["M10,0 L10,100","Straight down","start"],["M10,0 L55,0","Across top","top"],["M10,50 L48,50","Across middle","jump"]]},
+G:{w:74,s:[["M61.5,17.9 A32,50 0 1 0 69,50","Around and down left","start"],["M69,50 L42,50","Across at midline","keep"]]},
+H:{w:70,s:[["M10,0 L10,100","Straight down","start"],["M60,0 L60,100","Straight down","jump"],["M10,50 L60,50","Across middle","jump"]]},
+I:{w:60,s:[["M30,0 L30,100","Straight down","start"],["M8,0 L52,0","Across top","jump"],["M8,100 L52,100","Across bottom","jump"]]},
+J:{w:62,s:[["M45,0 L45,72","Down","start"],["M45,72 C45,104 8,104 5,80","Curve up left","keep"],["M25,0 L65,0","Across","jump"]]},
+K:{w:62,s:[["M10,0 L10,100","Down","start"],["M58,0 L10,50","Slant in left","jump"],["M10,50 L60,100","Slant out right","keep"]]},
+L:{w:56,s:[["M10,0 L10,100","Straight down","start"],["M10,100 L55,100","Across","keep"]]},
+M:{w:76,s:[["M8,0 L8,100","Straight down","start"],["M8,0 L38,100","Slant down right","top"],["M38,100 L68,0","Slant up right","keep"],["M68,0 L68,100","Straight down","keep"]]},
+N:{w:70,s:[["M10,0 L10,100","Straight down","start"],["M10,0 L60,100","Slant down","top"],["M60,100 L60,0","Straight up","keep"]]},
+O:{w:74,s:[["M37,0 A32,50 0 1 0 61.5,17.9","Around left","start"],["M61.5,17.9 A32,50 0 0 0 37,0","Close","keep"]]},
+P:{w:60,s:[["M10,0 L10,100","Straight down","start"],["M10,0 L30,0 C60,0 60,50 30,50 L10,50","Curve around","top"]]},
+Q:{w:76,s:[["M37,0 A32,50 0 0 0 37,100 A32,50 0 0 0 37,0","Around left","start"],["M46,74 L72,104","Slant right","jump"]]},
+R:{w:64,s:[["M10,0 L10,100","Straight down","start"],["M10,0 L30,0","Across","top"],["M30,0 C58,0 58,50 30,50 L10,50","Curve around","keep"],["M10,50 L60,100","Slant down","keep"]]},
+S:{w:66,s:[["M60,15 C52,-3 10,-3 9,22","Curve left","start"],["M9,22 C9,42 58,52 61,74","Slant","keep"],["M61,74 C62,102 16,106 5,84","Curve back","keep"]]},
+T:{w:70,s:[["M35,0 L35,100","Straight down","start"],["M5,0 L65,0","Straight across","jump"]]},
+U:{w:70,s:[["M8,0 L8,62","Straight down","start"],["M8,62 C8,108 62,108 62,62","Curve right","keep"],["M62,62 L62,0","Straight up","keep"]]},
+V:{w:70,s:[["M5,0 L35,100","Slant down","start"],["M35,100 L65,0","Slant up","keep"]]},
+W:{w:74,s:[["M4,0 L20,100","Slant down","start"],["M20,100 L37,0","Slant up","keep"],["M37,0 L54,100","Slant down","keep"],["M54,100 L70,0","Slant up","keep"]]},
+X:{w:70,s:[["M8,0 L62,100","Slant down right","start"],["M62,0 L8,100","Slant down left","jump"]]},
+Y:{w:70,s:[["M5,0 L35,50","Slant down right","start"],["M35,50 L65,0","Slant up right","keep"],["M35,50 L35,100","Straight down","jump"]]},
+Z:{w:66,s:[["M8,0 L60,0","Across","start"],["M60,0 L8,100","Slant down left","keep"],["M8,100 L60,100","Across","keep"]]}
+},
+lower: {
+a:{w:62,s:[["M51.65,62.5 A25,25 0 1 0 55,75 L55,50","Around left","start"],["M55,50 L55,100","Down","keep"]]},
+b:{w:66,s:[["M12,0 L12,100","Straight down","start"],["M12,100 L12,75 A25,25 0 0 1 62,75 A25,25 0 0 1 12,75","Around right","keep","u"]]},
+c:{w:58,s:[["M47.7,57.3 A25,25 0 1 0 47.7,92.7","Around left, stop","start"]]},
+d:{w:62,s:[["M51.65,62.5 A25,25 0 1 0 55,75 L55,0","Around left","start"],["M55,0 L55,100","Straight down","keep"]]},
+e:{w:60,s:[["M8,75 L54,75","Straight right","start"],["M54,75 A23,23 0 1 0 47.3,91.3","Around left, stop","keep"]]},
+f:{w:54,s:[["M50,10 C44,-2 25,-3 25,18","Curve left","start"],["M25,18 L25,100","Straight down","keep"],["M8,50 L45,50","Cross","jump"]]},
+g:{w:62,s:[["M51.65,62.5 A25,25 0 1 0 55,75 L55,50","Around left","start"],["M55,50 L55,135","Straight down","keep"],["M55,135 C55,155 22,155 15,140","Hook","keep"]]},
+h:{w:60,s:[["M12,0 L12,100","Straight down","start"],["M12,100 L12,68 C18,50 50,48 50,70","Curve right","keep","u"],["M50,70 L50,100","And down","keep"]]},
+i:{w:40,s:[["M20,50 L20,100","Down","start"],["M20,29 L20,31","Dot","dot"]]},
+j:{w:48,s:[["M32,50 L32,135","Straight down","start"],["M32,135 C32,155 8,155 4,140","Hook","keep"],["M32,29 L32,31","Dot","dot"]]},
+k:{w:56,s:[["M12,0 L12,100","Straight down","start"],["M46,50 L12,76","Slant in","jump"],["M12,76 L48,100","Slant out","keep"]]},
+l:{w:30,s:[["M15,0 L15,100","Straight down","start"]]},
+m:{w:72,s:[["M10,50 L10,100","Straight down","start"],["M10,100 L10,66 C14,48 36,48 36,66 L36,100","Curve down","keep","u"],["M36,100 L36,66 C38,48 62,48 62,66 L62,100","Curve down","keep","u"]]},
+n:{w:60,s:[["M12,50 L12,100","Straight down","start"],["M12,100 L12,68 C18,50 50,48 50,70 L50,100","Curve down","keep","u"]]},
+o:{w:62,s:[["M51.65,62.5 A25,25 0 1 0 47.7,92.7","Around","start"],["M47.7,92.7 A25,25 0 0 0 51.65,62.5","Close","keep"]]},
+p:{w:66,s:[["M12,50 L12,150","Straight down","start"],["M12,150 L12,75 A25,25 0 0 1 62,75 A25,25 0 0 1 12,75","Around right","keep","u"]]},
+q:{w:70,s:[["M51.65,62.5 A25,25 0 1 0 55,75 L55,50","Around","start"],["M55,50 L55,140","Straight down","keep"],["M55,140 C55,152 64,152 70,142","Hook right","keep"]]},
+r:{w:54,s:[["M12,50 L12,100","Straight down","start"],["M12,100 L12,68 C18,52 38,48 48,56","Curve over","keep","u"]]},
+s:{w:58,s:[["M48,58 C40,48 12,50 14,64","Curve left","start"],["M14,64 C16,74 46,76 48,87","Slant right","keep"],["M48,87 C47,100 18,103 10,92","Curve left","keep"]]},
+t:{w:52,s:[["M25,10 L25,100","Straight down","start"],["M8,50 L44,50","Cross","jump"]]},
+u:{w:62,s:[["M12,50 L12,80","Down","start"],["M12,80 C12,104 50,104 50,80 L50,50","Curve up","keep"],["M50,50 L50,100","Down","keep"]]},
+v:{w:60,s:[["M8,50 L30,100","Slant down","start"],["M30,100 L52,50","Slant up","keep"]]},
+w:{w:62,s:[["M6,50 L18,100","Slant down","start"],["M18,100 L30,50","Slant up","keep"],["M30,50 L42,100","Slant down","keep"],["M42,100 L54,50","Slant up","keep"]]},
+x:{w:58,s:[["M10,50 L48,100","Slant down right","start"],["M48,50 L10,100","Slant down left","jump"]]},
+y:{w:60,s:[["M12,50 L36,100","Slant right","start"],["M54,50 L18,150","Slant left","jump"]]},
+z:{w:58,s:[["M10,50 L48,50","Across","start"],["M48,50 L10,100","Slant down left","keep"],["M10,100 L48,100","Across","keep"]]}
+},
+num: {
+"0":{w:60,s:[["M30,0 A25,50 0 1 0 49.15,17.9","Around left","start"],["M49.15,17.9 A25,50 0 0 0 30,0","Close","keep"]]},
+"1":{w:50,s:[["M25,0 L25,100","Straight down","start"]]},
+"2":{w:64,s:[["M8,22 C10,-6 56,-6 55,24","Curve right","start"],["M55,24 C53,44 20,80 8,100","Slant down left","keep"],["M8,100 L58,100","Across","keep"]]},
+"3":{w:64,s:[["M8,12 C22,-6 56,-2 54,24 C52,44 34,48 26,48","Around right","start"],["M26,48 C40,48 58,56 58,74 C58,100 18,106 6,86","Around again","keep"]]},
+"4":{w:66,s:[["M10,0 L10,55","Straight down","start"],["M10,55 L60,55","Across","keep"],["M45,0 L45,100","Straight down","jump"]]},
+"5":{w:64,s:[["M12,0 L10,45","Straight down","start"],["M10,45 C25,35 58,38 58,70 C58,102 15,106 6,86","Around right","keep"],["M12,0 L54,0","Across top","jump"]]},
+"6":{w:62,s:[["M50,4 C30,-6 8,20 8,60","Curve down","start"],["M8,60 C8,104 56,104 56,74 C56,48 14,44 9,68","Around and close","keep"]]},
+"7":{w:64,s:[["M8,0 L58,0","Across","start"],["M58,0 L22,100","Slant down left","keep"]]},
+"8":{w:64,s:[["M52,14 C46,-4 12,-4 12,22 C12,38 30,46 32,50","Curve left","start"],["M32,50 C46,56 58,64 58,78 C58,104 6,104 6,78 C6,66 18,56 32,50","Around","keep"],["M32,50 C44,44 54,34 52,14","Up to the top","keep"]]},
+"9":{w:62,s:[["M50,24 A21,22 0 0 0 8,24 A21,22 0 0 0 50,24","Around left","start"],["M50,24 L50,100","Straight down","keep"]]}
+}};
+
+const KASE_NAME = {upper:"Uppercase", lower:"Lowercase", num:"Number"};
+const RAINBOW = [
+  {n:"Red",c:"var(--r1)"},{n:"Orange",c:"var(--r2)"},{n:"Yellow",c:"var(--r3)"},
+  {n:"Green",c:"var(--r4)"},{n:"Blue",c:"var(--r5)"},{n:"Indigo",c:"var(--r6)"},{n:"Violet",c:"var(--r7)"}];
+const MOVE_TEXT = {start:"Start here", keep:"Pencil stays down", jump:"Pick up your pencil", top:"Pick up your pencil, back to the top", dot:"Pick up your pencil, add a dot"};
+const LIFTS = {jump:1, top:1, dot:1};
+const SVGNS = "http://www.w3.org/2000/svg";
+function mk(tag, attrs, parent){
+  const e = document.createElementNS(SVGNS, tag);
+  if (attrs) for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+let _measure;
+function measurer(){
+  if (!_measure){
+    _measure = mk("svg",{width:"1",height:"1","aria-hidden":"true"});
+    _measure.style.cssText="position:absolute;left:-9999px;top:0;visibility:hidden";
+    document.body.appendChild(_measure);
+  }
+  return _measure;
+}
+const _geo = {};
+// Colors keep rotating through the rainbow: A, a, B, b ... then 0-9 starts again at red.
+const COLOR_START = (() => {
+  const out = {}; let n = 0;
+  for (const C of Object.keys(LETTERS.upper)) {
+    out["upper"+C] = n; n += LETTERS.upper[C].s.length;
+    const c = C.toLowerCase(); out["lower"+c] = n; n += LETTERS.lower[c].s.length;
+  }
+  n = 0;
+  for (const d of Object.keys(LETTERS.num)) { out["num"+d] = n; n += LETTERS.num[d].s.length; }
+  return out;
+})();
+function letterGeo(kase, ch){
+  const key = kase+ch;
+  if (_geo[key]) return _geo[key];
+  const L = LETTERS[kase][ch];
+  const strokes = L.s.map(([d, say, move, flag]) => {
+    const p = mk("path",{d}, measurer());
+    const len = p.getTotalLength();
+    const at = t => p.getPointAtLength(Math.max(0, Math.min(len, t)));
+    const unit = (a,b) => { const dx=b.x-a.x, dy=b.y-a.y, m=Math.hypot(dx,dy)||1; return {x:dx/m,y:dy/m}; };
+    const s0 = at(0), s1 = at(Math.min(3,len)), e0 = at(Math.max(0,len-3)), e1 = at(len);
+    return {d, say, move, flag, len, start:s0, end:e1, t0:unit(s0,s1), t1:unit(e0,e1), path:p};
+  });
+  // place number badges just behind each start point, avoiding collisions
+  strokes.forEach((s,i) => { s.ci = (COLOR_START[key] + i) % 7; });
+  const placed = [];
+  strokes.forEach(s => {
+    const R = 11;
+    let cands = [
+      {x:-s.t0.x, y:-s.t0.y},{x:-s.t0.y, y:s.t0.x},{x:s.t0.y, y:-s.t0.x},
+      {x:-s.t0.x*0.7-s.t0.y*0.7, y:-s.t0.y*0.7+s.t0.x*0.7},{x:-s.t0.x*0.7+s.t0.y*0.7, y:-s.t0.y*0.7-s.t0.x*0.7}];
+    let best = null;
+    for (const c of cands){
+      const b = {x:s.start.x + c.x*R, y:s.start.y + c.y*R};
+      const ok = placed.every(q => Math.hypot(q.x-b.x, q.y-b.y) > 13);
+      if (ok){ best = b; break; }
+    }
+    if (!best) best = {x:s.start.x - s.t0.x*R*1.9, y:s.start.y - s.t0.y*R*1.9};
+    if (s.move === "dot") best = {x:s.start.x + 12, y:s.start.y - 8};
+    placed.push(best); s.badge = best;
+  });
+  return (_geo[key] = {w:L.w, strokes});
+}
+function viewBoxFor(g){ return `${-22} ${-24} ${g.w+44} ${190}`; }
+function drawPaper(svg, g){
+  const x1=-22, x2=g.w+22;
+  mk("line",{x1,x2,y1:0,y2:0,class:"pl pl-top"},svg);
+  mk("line",{x1,x2,y1:50,y2:50,class:"pl pl-mid"},svg);
+  mk("line",{x1,x2,y1:100,y2:100,class:"pl pl-base"},svg);
+  mk("line",{x1,x2,y1:150,y2:150,class:"pl pl-desc"},svg);
+}
+function arrowPoints(s){
+  const {x,y} = s.end, t = s.t1, n = {x:-t.y, y:t.x}, k = s.flag==="r" ? 0.6 : 1;
+  const tip = {x:x+t.x*9*k, y:y+t.y*9*k}, bx = x - t.x*1, by = y - t.y*1;
+  return `${tip.x},${tip.y} ${bx+n.x*7*k},${by+n.y*7*k} ${bx-n.x*7*k},${by-n.y*7*k}`;
+}
+function drawStroke(group, s, i, opts){
+  const col = RAINBOW[s.ci].c;
+  const gg = mk("g",{class:"stroke-g"+(s.flag==="r"?" retrace":""), "data-i":i});
+  if (s.flag === "u") group.insertBefore(gg, group.firstChild); else group.appendChild(gg);
+  if (s.move === "dot"){
+    mk("circle",{cx:s.start.x, cy:(s.start.y+s.end.y)/2, r:6.2, class:"dot-case"}, gg);
+    mk("circle",{cx:s.start.x, cy:(s.start.y+s.end.y)/2, r:5.2, style:`fill:${col}`, class:"ink dot"}, gg);
+  } else {
+    mk("path",{d:s.d, class:"case"}, gg);
+    const p = mk("path",{d:s.d, class:"ink", style:`stroke:${col}`, pathLength:"1"}, gg);
+    if (opts.arrows !== false && s.len > 14){
+      mk("polygon",{points:arrowPoints(s), style:`fill:${col}`, class:"arrow"}, gg);
+    }
+  }
+  if (opts.badges !== false){
+    const b = mk("g",{class:"badge","data-ci":s.ci}, opts.badgeLayer || gg);
+    gg.badge = b;
+    mk("circle",{cx:s.badge.x, cy:s.badge.y, r:6.6, style:`fill:${col}`}, b);
+    const t = mk("text",{x:s.badge.x, y:s.badge.y+0.4}, b);
+    t.textContent = i+1;
+  }
+  return gg;
+}
+// Static letter. upto = index of last stroke to show in color; ghost others.
+function staticLetter(kase, ch, opts={}){
+  const g = letterGeo(kase, ch);
+  const svg = mk("svg",{viewBox:viewBoxFor(g), class:"letter-svg", role:"img"});
+  mk("title",{},svg).textContent = `${KASE_NAME[kase]} ${ch}`;
+  if (opts.paper !== false) drawPaper(svg, g);
+  const upto = opts.upto ?? g.strokes.length-1;
+  const ghost = mk("g",{class:"ghost"},svg);
+  g.strokes.forEach((s,i) => {
+    if (i > upto){ s.move==="dot" ? mk("circle",{cx:s.start.x,cy:(s.start.y+s.end.y)/2,r:5}, ghost) : mk("path",{d:s.d},ghost); }
+  });
+  const ink = mk("g",{},svg);
+  const badgeLayer = mk("g",{},svg);
+  g.strokes.forEach((s,i) => {
+    if (i > upto) return;
+    const faded = opts.only != null && i < opts.only;
+    const el = drawStroke(ink, s, i, {badges: faded ? false : opts.badges, arrows: faded ? false : opts.arrows, badgeLayer});
+    if (faded) el.classList.add("done");
+    if (opts.only != null && i === opts.only) el.classList.add("current");
+  });
+  return svg;
+}
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const state = {kase:"upper", ch:"A", step:-1};
+  let token = 0;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isYellow = s => s.ci === 2;
+
+  try { const s = JSON.parse(localStorage.getItem("rlb") || "null"); if (s && LETTERS[s.kase] && LETTERS[s.kase][s.ch]) { state.kase = s.kase; state.ch = s.ch; } } catch(e){}
+  function save(){ try { localStorage.setItem("rlb", JSON.stringify({kase:state.kase, ch:state.ch})); } catch(e){} }
+
+  function renderPicker(){
+    $("caseUpper").setAttribute("aria-pressed", state.kase==="upper");
+    $("caseLower").setAttribute("aria-pressed", state.kase==="lower");
+    $("caseNum").setAttribute("aria-pressed", state.kase==="num");
+    const abc = $("abc"); abc.innerHTML = "";
+    Object.keys(LETTERS[state.kase]).forEach(ch => {
+      const b = document.createElement("button");
+      b.textContent = ch; b.setAttribute("aria-label", KASE_NAME[state.kase]+" "+ch);
+      if (ch === state.ch) b.setAttribute("aria-current","true");
+      b.onclick = () => { state.ch = ch; save(); load(); renderPicker(); };
+      abc.appendChild(b);
+    });
+  }
+
+  let stage; // {svg, groups[], tip, hop}
+  function buildStage(){
+    const g = letterGeo(state.kase, state.ch);
+    const svg = mk("svg",{viewBox:viewBoxFor(g), class:"letter-svg", role:"img", "aria-label":`How to write ${KASE_NAME[state.kase].toLowerCase()} ${state.ch}`});
+    drawPaper(svg, g);
+    const ghost = mk("g",{class:"ghost"+($("ghost").checked?"":" off")},svg);
+    g.strokes.forEach(s => s.move==="dot" ? mk("circle",{cx:s.start.x,cy:(s.start.y+s.end.y)/2,r:5},ghost) : mk("path",{d:s.d},ghost));
+    const ink = mk("g",{},svg);
+    const badgeLayer = mk("g",{},svg);
+    const groups = g.strokes.map((s,i) => drawStroke(ink, s, i, {badgeLayer}));
+    const hop = mk("path",{class:"hop",d:""},svg);
+    const tip = mk("circle",{class:"tip",r:4.5,cx:-100,cy:-100},svg);
+    const lift = mk("text",{class:"lift-say"},svg); lift.textContent = "Pick up!"; lift.style.display = "none";
+    $("board").innerHTML = ""; $("board").appendChild(svg);
+    stage = {svg, groups, tip, hop, ghost, g, lift};
+  }
+  // visibility helpers: 0 hidden, 1 full
+  function setStroke(i, mode){
+    const gr = stage.groups[i], s = stage.g.strokes[i];
+    const ink = gr.querySelector(".ink"), cs = gr.querySelector(".case, .dot-case"), ar = gr.querySelector(".arrow"), bd = gr.badge;
+    gr.classList.remove("done");
+    if (mode === "hide"){ gr.style.display="none"; if (bd) bd.style.display="none"; return; }
+    gr.style.display=""; if (bd) bd.style.display="";
+    if (s.move !== "dot"){ ink.style.strokeDasharray = ""; ink.style.strokeDashoffset = ""; cs.style.visibility = "visible"; }
+    else { ink.style.transform=""; }
+    if (ar) ar.style.visibility = "visible";
+    if (mode === "done"){ gr.classList.add("done"); if (bd) bd.style.display="none"; }
+  }
+  function showAll(){ stage.g.strokes.forEach((s,i)=>setStroke(i,"full")); stage.tip.setAttribute("cx",-100); stage.hop.setAttribute("d",""); stage.lift.style.display="none"; }
+
+  const sleep = (ms, tk) => new Promise(r => setTimeout(() => r(tk === token), ms));
+  function tween(dur, tk, fn){
+    return new Promise(res => {
+      const t0 = performance.now();
+      function f(now){
+        if (tk !== token) return res(false);
+        const t = Math.min(1, (now - t0) / dur);
+        fn(t);
+        if (t < 1) requestAnimationFrame(f); else res(true);
+      }
+      requestAnimationFrame(f);
+    });
+  }
+  const ease = t => t < .5 ? 2*t*t : 1 - Math.pow(-2*t+2, 2)/2;
+  const speed = () => parseFloat($("speed").value);
+
+  async function hopTo(from, to, kind, tk){
+    const tip = stage.tip;
+    stage.lift.setAttribute("x", Math.max(8, Math.min(stage.g.w-8, (from.x+to.x)/2)));
+    stage.lift.setAttribute("y", Math.min(from.y, to.y) - 8 < -12 ? Math.max(from.y,to.y) + 22 : Math.min(from.y, to.y) - 8);
+    stage.lift.style.display = "";
+    if (reduce){ const ok = await sleep(900, tk); stage.lift.style.display = "none"; return ok; }
+    tip.classList.add("up");
+    const vertical = Math.abs(from.x-to.x) < 12;
+    const midx = (from.x+to.x)/2 - (vertical ? 26 : 0);
+    const midy = vertical ? (from.y+to.y)/2 : Math.min(from.y, to.y) - 18;
+    const d = `M${from.x},${from.y} Q${midx},${midy} ${to.x},${to.y}`;
+    stage.hop.setAttribute("d", d);
+    if (!(await sleep(250, tk))) return false;
+    const ok = await tween(750*speed(), tk, t => {
+      const e = ease(t), u = 1-e;
+      tip.setAttribute("cx", u*u*from.x + 2*u*e*midx + e*e*to.x);
+      tip.setAttribute("cy", u*u*from.y + 2*u*e*midy + e*e*to.y);
+    });
+    stage.hop.setAttribute("d",""); tip.classList.remove("up"); stage.lift.style.display = "none";
+    return ok;
+  }
+  async function drawOne(i, tk){
+    const s = stage.g.strokes[i], gr = stage.groups[i];
+    const ink = gr.querySelector(".ink"), cs = gr.querySelector(".case, .dot-case"), ar = gr.querySelector(".arrow"), bd = gr.badge;
+    gr.classList.remove("done");
+    gr.style.display = ""; if (bd) bd.style.display = "";
+    if (ar) ar.style.visibility = "hidden";
+    showCaption(i);
+    if (reduce){ setStroke(i,"full"); return sleep(500, tk); }
+    if (s.move === "dot"){
+      cs.style.visibility = "hidden";
+      stage.tip.setAttribute("cx", -100);
+      const ok = await tween(500*speed(), tk, t => { const k = t<.6 ? t/.6*1.25 : 1.25 - (t-.6)/.4*.25; ink.style.transformBox="fill-box"; ink.style.transformOrigin="center"; ink.style.transform=`scale(${k})`; });
+      cs.style.visibility = "visible";
+      return ok;
+    }
+    cs.style.visibility = "hidden";
+    ink.style.strokeDasharray = "1 2"; ink.style.strokeDashoffset = "1";
+    const dur = Math.max(450, s.len * 13) * speed();
+    const ok = await tween(dur, tk, t => {
+      const e = ease(t);
+      ink.style.strokeDashoffset = String(1 - e);
+      const p = s.path.getPointAtLength(e * s.len);
+      stage.tip.setAttribute("cx", p.x); stage.tip.setAttribute("cy", p.y);
+    });
+    if (!ok) return false;
+    ink.style.strokeDasharray = ""; ink.style.strokeDashoffset = "";
+    cs.style.visibility = "visible";
+    if (ar) ar.style.visibility = "visible";
+    return true;
+  }
+
+  function showCaption(i){
+    const c = $("caption");
+    if (i < 0){
+      const n = stage.g.strokes.length;
+      c.innerHTML = `<div><div class="say">${KASE_NAME[state.kase]} ${state.ch}</div><div class="move">${n} ${n===1?"step":"steps"}. Press play to watch it, or go one step at a time.</div></div>`;
+      return;
+    }
+    const s = stage.g.strokes[i];
+    c.innerHTML = `<span class="num${isYellow(s)?" yel":""}" style="background:${RAINBOW[s.ci].c}">${i+1}</span><div><div class="say">${s.say}</div><div class="move${LIFTS[s.move]?" lift":""}">${MOVE_TEXT[s.move]}</div></div>`;
+  }
+
+  function updateButtons(){
+    const n = stage.g.strokes.length;
+    $("prev").disabled = state.step <= 0;
+    $("next").textContent = state.step >= n-1 ? "Start steps again ▶" : (state.step < 0 ? "Step 1 ▶" : `Step ${state.step+2} ▶`);
+    document.querySelectorAll(".card").forEach((c,i) => c.classList.toggle("on", i === state.step));
+  }
+
+  async function playAll(){
+    const tk = ++token; state.step = -1; updateButtons();
+    stage.groups.forEach((g,i) => setStroke(i,"hide"));
+    const strokes = stage.g.strokes;
+    const st = strokes[0].start; stage.tip.setAttribute("cx", st.x); stage.tip.setAttribute("cy", st.y);
+    if (!(await sleep(350, tk))) return;
+    for (let i=0;i<strokes.length;i++){
+      if (i>0 && strokes[i].move !== "keep"){
+        if (!(await hopTo(strokes[i-1].end, strokes[i].start, strokes[i].move, tk))) return;
+      }
+      if (!(await drawOne(i, tk))) return;
+      if (!(await sleep(220*speed(), tk))) return;
+    }
+    stage.tip.setAttribute("cx",-100);
+  }
+  async function playStep(i){
+    const tk = ++token; state.step = i; updateButtons();
+    const strokes = stage.g.strokes;
+    strokes.forEach((s,j) => setStroke(j, j < i ? "done" : "hide"));
+    if (i>0 && strokes[i].move !== "keep"){
+      stage.tip.setAttribute("cx", strokes[i-1].end.x); stage.tip.setAttribute("cy", strokes[i-1].end.y);
+      showCaption(i);
+      if (!(await sleep(250, tk))) return;
+      if (!(await hopTo(strokes[i-1].end, strokes[i].start, strokes[i].move, tk))) return;
+    } else {
+      stage.tip.setAttribute("cx", strokes[i].start.x); stage.tip.setAttribute("cy", strokes[i].start.y);
+      showCaption(i);
+      if (!(await sleep(300, tk))) return;
+    }
+    if (!(await drawOne(i, tk))) return;
+    if (i === strokes.length-1){
+      await sleep(600, tk); if (tk!==token) return;
+      strokes.forEach((s,j)=>setStroke(j,"full"));
+    }
+    stage.tip.setAttribute("cx",-100);
+  }
+
+  function buildCards(){
+    const g = letterGeo(state.kase, state.ch), wrap = $("cards");
+    wrap.innerHTML = "";
+    $("stepsTitle").textContent = `Steps for ${state.ch}`;
+    g.strokes.forEach((s,i) => {
+      const b = document.createElement("button");
+      b.className = "card"; b.style.setProperty("--cc", RAINBOW[s.ci].c);
+      const svg = staticLetter(state.kase, state.ch, {upto:i, only:i});
+      const cur = svg.querySelector(".current");
+      if (cur) cur.style.setProperty("--dur", (Math.max(1.6, s.len*0.022)).toFixed(2)+"s");
+      b.appendChild(svg);
+      const lab = document.createElement("div"); lab.className = "lab";
+      lab.innerHTML = `<i class="${isYellow(s)?"yel":""}">${i+1}</i><span>${s.say}</span>`;
+      const mv = document.createElement("div"); mv.className = "mv" + (LIFTS[s.move] ? " lift" : ""); mv.textContent = MOVE_TEXT[s.move];
+      b.append(lab, mv);
+      b.setAttribute("aria-label", `Step ${i+1}: ${s.say}. ${MOVE_TEXT[s.move]}.`);
+      b.onclick = () => playStep(i);
+      wrap.appendChild(b);
+    });
+  }
+
+  function load(){
+    token++; state.step = -1;
+    $("playAll").textContent = "\u25B6 Watch the whole " + (state.kase === "num" ? "number" : "letter");
+    buildStage(); showAll(); showCaption(-1); buildCards(); updateButtons();
+  }
+
+  let lastLetter = "A";
+  function setKase(k){
+    if (state.kase === k) return;
+    if (state.kase !== "num") lastLetter = state.ch.toUpperCase();
+    state.kase = k;
+    state.ch = k === "num" ? "0" : (k === "upper" ? lastLetter : lastLetter.toLowerCase());
+    save(); renderPicker(); load();
+  }
+  $("caseUpper").onclick = () => setKase("upper");
+  $("caseLower").onclick = () => setKase("lower");
+  $("caseNum").onclick = () => setKase("num");
+  $("playAll").onclick = playAll;
+  $("next").onclick = () => { const n = stage.g.strokes.length; playStep(state.step >= n-1 ? 0 : state.step+1); };
+  $("prev").onclick = () => { if (state.step > 0) playStep(state.step-1); };
+  $("ghost").onchange = () => stage.ghost.classList.toggle("off", !$("ghost").checked);
+  document.addEventListener("keydown", e => {
+    if (e.target.closest("select,input")) return;
+    if (e.key === " " && !e.target.closest("button")){ e.preventDefault(); playAll(); }
+    else if (e.key === "ArrowRight"){ e.preventDefault(); $("next").click(); }
+    else if (e.key === "ArrowLeft"){ e.preventDefault(); $("prev").click(); }
+  });
+
+  renderPicker(); load();
+})();
+</script>
+
+</body></html>
